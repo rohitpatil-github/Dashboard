@@ -1,0 +1,200 @@
+.dashboard {
+  min-height: 100vh;
+  background-color: #000000;
+}
+
+.dashboard-container {
+  padding: 2rem;
+}
+
+.dashboard-title {
+  color: #ffffff !important;
+  margin-bottom: 2rem !important;
+}
+
+.dashboard-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.dashboard-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.user-card {
+  background-color: #111111 !important;
+  border: 1px solid #37ff8b40;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.user-card:hover {
+  transform: translateY(-5px);
+  border-color: #37ff8b;
+}
+
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.user-avatar {
+  width: 60px !important;
+  height: 60px !important;
+  border: 2px solid #37ff8b;
+}
+
+.user-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.user-name {
+  color: #ffffff !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.user-role {
+  background-color: #37ff8b20 !important;
+  color: #37ff8b !important;
+  border: 1px solid #37ff8b40;
+  margin-bottom: 1rem !important;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffffff80;
+}
+
+.info-item .MuiSvgIcon-root {
+  color: #37ff8b;
+}
+
+.info-item .MuiTypography-root {
+  color: #ffffff;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .user-card {
+    height: 100%;
+  }
+
+  .user-avatar {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
+
+.dashboard-content {
+  padding: 2rem;
+  flex-grow: 1;
+  color: #ffffff;
+}
+
+.dashboard-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #000000;
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-controls span {
+  color: #ffffff;
+}
+
+.table-header {
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+
+.pagination-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* MUI Table customizations */
+.MuiTableContainer-root {
+  background-color: #111111 !important;
+  box-shadow: 0 1px 3px rgba(55, 255, 139, 0.1) !important;
+  border-radius: 8px !important;
+  border: 1px solid #37ff8b !important;
+}
+
+.MuiTableCell-root {
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(55, 255, 139, 0.2) !important;
+}
+
+.MuiTableHead-root .MuiTableCell-root {
+  background-color: #1a1a1a !important;
+  color: #37ff8b !important;
+  font-weight: 600 !important;
+}
+
+.MuiTableRow-root:hover {
+  background-color: rgba(55, 255, 139, 0.05) !important;
+}
+
+/* AppBar customization */
+.MuiAppBar-root {
+  background-color: #111111 !important;
+  border-bottom: 1px solid #37ff8b !important;
+}
+
+/* Pagination customization */
+.MuiPagination-root .MuiPaginationItem-root {
+  color: #ffffff !important;
+}
+
+.MuiPagination-root .Mui-selected {
+  background-color: #37ff8b !important;
+  color: #000000 !important;
+}
+
+.MuiPagination-root .MuiPaginationItem-root:hover {
+  background-color: rgba(55, 255, 139, 0.2) !important;
+}
+
+/* Avatar size adjustment */
+.dashboard-content ui5-avatar {
+  width: 32px;
+  height: 32px;
+} 

@@ -1,0 +1,132 @@
+.add-user-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px); /* Adjust based on your navbar height */
+  background-color: #000000;
+  padding: 20px;
+}
+
+.add-user-card {
+  background: #111111;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(55, 255, 139, 0.1);
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #37ff8b;
+}
+
+.add-user-card h2 {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
+.demo-info {
+  background-color: #1a1a1a;
+  border: 1px solid #37ff8b;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.demo-info p {
+  margin: 0 0 0.5rem 0;
+  color: #ffffff;
+}
+
+.demo-info ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  list-style-type: none;
+}
+
+.demo-info li {
+  margin-bottom: 0.25rem;
+  color: #ffffff;
+}
+
+.demo-info code {
+  background-color: #000000;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  color: #37ff8b;
+}
+
+.demo-info .demo-note {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #37ff8b;
+  font-style: italic;
+  color: #ffffff;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #37ff8b;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  transition: all 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #37ff8b;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(55, 255, 139, 0.2);
+}
+
+.error-message {
+  color: #ff3737;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.success-message {
+  color: #37ff8b;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  padding: 0.5rem;
+  background-color: rgba(55, 255, 139, 0.1);
+  border-radius: 4px;
+  border: 1px solid #37ff8b;
+}
+
+.add-user-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #37ff8b;
+  color: #000000;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-user-button:hover {
+  background-color: #2be077;
+}
+
+.add-user-button:disabled {
+  background-color: #1a1a1a;
+  cursor: not-allowed;
+  color: #666666;
+} 

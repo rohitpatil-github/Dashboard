@@ -1,8 +1,106 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000000;
+}
+
+/* Override MUI default styles */
+.MuiButton-root {
+  background-color: #37ff8b !important;
+  color: #000000 !important;
+}
+
+.MuiButton-root:hover {
+  background-color: #2be077 !important;
+}
+
+.MuiButton-root.Mui-disabled {
+  background-color: #1a1a1a !important;
+  color: #666666 !important;
+}
+
+/* Override any light theme colors from MUI */
+.MuiPaper-root {
+  background-color: #111111 !important;
+  color: #ffffff !important;
+}
+
+.MuiTypography-root {
+  color: #ffffff !important;
+}
+
+.MuiTypography-root.accent {
+  color: #37ff8b !important;
+}
+
+/* Input fields global style */
+.MuiInputBase-root {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+.MuiInputBase-root .MuiOutlinedInput-notchedOutline {
+  border-color: #37ff8b !important;
+}
+
+.MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #2be077 !important;
+}
+
+.MuiInputLabel-root {
+  color: #ffffff !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: #37ff8b !important;
+}
+
+/* Dialog/Modal styles */
+.MuiDialog-paper {
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border: 1px solid #37ff8b !important;
+}
+
+/* Alert styles */
+.MuiAlert-root {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: 1px solid #37ff8b !important;
+}
+
+.MuiAlert-standardSuccess {
+  border-color: #37ff8b !important;
+}
+
+.MuiAlert-standardError {
+  border-color: #ff3737 !important;
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111111;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #37ff8b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2be077;
 }
 
 .logo {
