@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 const API_URL = 'https://reqres.in/api';
 
@@ -23,52 +24,28 @@ export const loginAsync = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await axios.post(`${API_URL}/login`, {
+        email,
+        password
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        return rejectWithValue(data.error || 'Login failed');
-      }
-
-      // Store token in localStorage
-      localStorage.setItem('token', data.token);
-      return { token: data.token, user: { email } };
+      return response.data;
     } catch (error) {
-      return rejectWithValue('Login failed. Please try again.');
+      return rejectWithValue(error.response.data.error || 'Login failed');
     }
   }
 );
 
 export const registerAsync = createAsyncThunk(
   'auth/register',
-  async ({ name, email, password }, { rejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${API_URL}/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await axios.post(`${API_URL}/register`, {
+        email,
+        password
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        return rejectWithValue(data.error || 'Registration failed');
-      }
-
-      // Store token in localStorage
-      localStorage.setItem('token', data.token);
-      return { token: data.token, user: { name, email } };
+      return response.data;
     } catch (error) {
-      return rejectWithValue('Registration failed. Please try again.');
+      return rejectWithValue(error.response.data.error || 'Registration failed');
     }
   }
 );
@@ -100,6 +77,7 @@ const authSlice = createSlice({
         state.token = action.payload.token;
         state.isAuthenticated = true;
         state.error = null;
+        localStorage.setItem('token', action.payload.token);
       })
       .addCase(loginAsync.rejected, (state, action) => {
         state.loading = false;
@@ -116,6 +94,7 @@ const authSlice = createSlice({
         state.token = action.payload.token;
         state.isAuthenticated = true;
         state.error = null;
+        localStorage.setItem('token', action.payload.token);
       })
       .addCase(registerAsync.rejected, (state, action) => {
         state.loading = false;

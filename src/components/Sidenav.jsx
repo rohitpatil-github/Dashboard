@@ -2,26 +2,30 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
+  Box,
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   IconButton,
-  Box,
+  useTheme,
   useMediaQuery,
-  useTheme
+  Divider,
+  Typography,
 } from '@mui/material';
 import {
+  Menu as MenuIcon,
   Dashboard as DashboardIcon,
   People as PeopleIcon,
-  PersonAdd as PersonAddIcon,
   Logout as LogoutIcon,
-  Menu as MenuIcon
 } from '@mui/icons-material';
 import { logout } from '../store/slices/authSlice';
 
-const Sidenav = () => {
+const drawerWidth = 240;
+
+const Sidenav = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,144 +37,126 @@ const Sidenav = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleNavigation = (path) => {
-    navigate(path);
-    if (isMobile) {
-      setMobileOpen(false);
-    }
-  };
-
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/auth');
+    navigate('/login');
   };
 
   const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
+    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
     { text: 'Users', icon: <PeopleIcon />, path: '/users' },
-    { text: 'Add User', icon: <PersonAddIcon />, path: '/add-user' },
   ];
 
-  const drawerContent = (
-    <Box
-      sx={{
-        height: '100%',
-        backgroundColor: '#111111',
-        color: '#ffffff',
-      }}
-    >
+  const drawer = (
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ p: 2 }}>
+        <Typography variant="h6" noWrap component="div">
+          Admin Panel
+        </Typography>
+      </Box>
+      <Divider />
       <List>
         {menuItems.map((item) => (
-          <ListItem
-            button
-            key={item.text}
-            onClick={() => handleNavigation(item.path)}
-            sx={{
-              backgroundColor: location.pathname === item.path ? '#37ff8b20' : 'transparent',
-              '&:hover': {
-                backgroundColor: '#37ff8b40',
-              },
-              '& .MuiListItemIcon-root': {
-                color: location.pathname === item.path ? '#37ff8b' : '#ffffff',
-              },
-              '& .MuiListItemText-primary': {
-                color: location.pathname === item.path ? '#37ff8b' : '#ffffff',
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: '#ffffff' }}>
-              {item.icon}
-            </ListItemIcon>
-            <ListItemText primary={item.text} />
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton
+              onClick={() => {
+                navigate(item.path);
+                if (isMobile) setMobileOpen(false);
+              }}
+              sx={{
+                backgroundColor:
+                  location.pathname === item.path
+                    ? 'rgba(55, 255, 139, 0.08)'
+                    : 'transparent',
+                '&:hover': {
+                  backgroundColor: 'rgba(55, 255, 139, 0.12)',
+                },
+              }}
+            >
+              <ListItemIcon sx={{ color: theme.palette.primary.main }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
           </ListItem>
         ))}
-        <ListItem
-          button
-          onClick={handleLogout}
-          sx={{
-            '&:hover': {
-              backgroundColor: '#37ff8b40',
-            },
-            '& .MuiListItemIcon-root': {
-              color: '#ffffff',
-            },
-          }}
-        >
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" />
+      </List>
+      <Box sx={{ flexGrow: 1 }} />
+      <Divider />
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton onClick={handleLogout}>
+            <ListItemIcon sx={{ color: theme.palette.primary.main }}>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItemButton>
         </ListItem>
       </List>
     </Box>
   );
 
   return (
-    <>
-      {isMobile && (
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-          onClick={handleDrawerToggle}
-          sx={{
-            position: 'fixed',
-            top: '1rem',
-            left: '1rem',
-            zIndex: 1200,
-            color: '#37ff8b',
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
-      )}
-
+    <Box sx={{ display: 'flex' }}>
       <Box
         component="nav"
         sx={{
-          width: { sm: 240 },
+          width: { sm: drawerWidth },
           flexShrink: { sm: 0 },
         }}
       >
-        {/* Mobile drawer */}
+        {isMobile && (
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{
+              position: 'fixed',
+              top: 16,
+              left: 16,
+              zIndex: 1200,
+              backgroundColor: theme.palette.background.paper,
+              '&:hover': {
+                backgroundColor: theme.palette.background.default,
+              },
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
         <Drawer
-          variant="temporary"
-          open={mobileOpen}
+          variant={isMobile ? 'temporary' : 'permanent'}
+          open={isMobile ? mobileOpen : true}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better mobile performance
+            keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
-              width: 240,
-              backgroundColor: '#111111',
-              borderRight: '1px solid #37ff8b',
+              width: drawerWidth,
+              backgroundColor: theme.palette.background.paper,
+              borderRight: `1px solid ${theme.palette.divider}`,
             },
           }}
         >
-          {drawerContent}
-        </Drawer>
-
-        {/* Desktop drawer */}
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: 240,
-              backgroundColor: '#111111',
-              borderRight: '1px solid #37ff8b',
-            },
-          }}
-          open
-        >
-          {drawerContent}
+          {drawer}
         </Drawer>
       </Box>
-    </>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+          pt: { xs: 7, sm: 3 },
+          px: { xs: 2, sm: 3 },
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
   );
 };
 

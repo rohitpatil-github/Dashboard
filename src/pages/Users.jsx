@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Grid,
@@ -20,21 +21,23 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  InputAdornment
+  InputAdornment,
+  Fab
 } from '@mui/material';
 import {
   Search as SearchIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
-  Close as CloseIcon
+  Close as CloseIcon,
+  Add as AddIcon
 } from '@mui/icons-material';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsers } from '../store/slices/userSlice';
 
 const Users = () => {
-  const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { users, loading, error } = useSelector((state) => state.users);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [roleFilter, setRoleFilter] = useState('all');
@@ -42,49 +45,20 @@ const Users = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get('https://reqres.in/api/users?page=1&per_page=12');
-        const usersWithDetails = response.data.data.map(user => ({
-          ...user,
-          status: user.id % 2 === 0 ? 'active' : 'inactive',
-          role: user.id % 3 === 0 ? 'admin' : 'user'
-        }));
-        setUsers(usersWithDetails);
-        setFilteredUsers(usersWithDetails);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to fetch users');
-        setLoading(false);
-      }
-    };
+    dispatch(fetchUsers());
+  }, [dispatch]);
 
-    fetchUsers();
-  }, []);
+  // Filter users based on search term and filters
+  const filteredUsers = users.filter(user => {
+    const matchesSearch = searchTerm === '' || 
+      `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase());
 
-  useEffect(() => {
-    let result = users;
+    const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
+    const matchesRole = roleFilter === 'all' || user.role === roleFilter;
 
-    // Apply search filter
-    if (searchTerm) {
-      result = result.filter(user =>
-        `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Apply status filter
-    if (statusFilter !== 'all') {
-      result = result.filter(user => user.status === statusFilter);
-    }
-
-    // Apply role filter
-    if (roleFilter !== 'all') {
-      result = result.filter(user => user.role === roleFilter);
-    }
-
-    setFilteredUsers(result);
-  }, [searchTerm, statusFilter, roleFilter, users]);
+    return matchesSearch && matchesStatus && matchesRole;
+  });
 
   const handleEdit = (user) => {
     setSelectedUser(user);
@@ -100,12 +74,14 @@ const Users = () => {
   const confirmDelete = async () => {
     try {
       // In a real application, you would make an API call here
-      await axios.delete(`https://reqres.in/api/users/${selectedUser.id}`);
-      setUsers(users.filter(u => u.id !== selectedUser.id));
+      await fetch(`https://reqres.in/api/users/${selectedUser.id}`, {
+        method: 'DELETE'
+      });
+      dispatch(fetchUsers());
       setIsDeleteDialogOpen(false);
       setSelectedUser(null);
     } catch (err) {
-      setError('Failed to delete user');
+      console.error('Failed to delete user:', err);
     }
   };
 
@@ -126,10 +102,21 @@ const Users = () => {
   }
 
   return (
-    <Box sx={{ flexGrow: 1, p: 3, backgroundColor: '#121212', minHeight: '100vh' }}>
-      <Typography variant="h4" sx={{ mb: 4, color: '#fff' }}>
-        Users
-      </Typography>
+    <Box sx={{ flexGrow: 1, p: 3, backgroundColor: '#121212', minHeight: '100vh', position: 'relative' }}>
+      {/* Header */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Typography variant="h4" sx={{ color: '#fff' }}>
+          Users ({filteredUsers.length})
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={() => navigate('/add-user')}
+        >
+          Add User
+        </Button>
+      </Box>
 
       {/* Filters */}
       <Box sx={{ mb: 4, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
@@ -273,17 +260,10 @@ const Users = () => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={() => setIsDeleteDialogOpen(false)}
-            sx={{ color: '#fff' }}
-          >
+          <Button onClick={() => setIsDeleteDialogOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button
-            onClick={confirmDelete}
-            sx={{ color: '#ff4444' }}
-            autoFocus
-          >
+          <Button onClick={confirmDelete} color="error" variant="contained">
             Delete
           </Button>
         </DialogActions>
